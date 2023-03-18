@@ -13,3 +13,21 @@ for index, row in df_medical.iterrows():
     t = [i for i in row]
     y.append(t.pop())
     x.append(t)
+
+def test_data_1():
+    df = pd.read_csv(os.path.join(os.path.dirname(__file__), 'datasets', 'dump', 'test.csv'))
+    for index, row in df.iterrows():
+        t = [i for i in row]
+        y.append(t.pop())
+        x.append(t)
+    return x, y
+
+def train_data_1():
+    df = pd.read_csv(os.path.join(os.path.dirname(__file__), 'datasets', 'dump', 'train.csv'))
+    for index, row in df.iterrows():
+        t = [i for i in row]
+        y.append(t.pop())
+        x.append(t)
+    return x, y
+
+print(train_data_1())
