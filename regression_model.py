@@ -2,7 +2,7 @@ import numpy as np
 
 # Linear Regression
 class LR:
-    def __init__(self, x, y, epoch=10000, lr=1e-3, alpha=0, gamma=0.9, beta=0.9, batch=1, optimization="None"):
+    def __init__(self, x, y, epoch=10000, lr=1e-3, alpha=0, gamma=0.9, beta=0.9, batch=1, optimizer="None"):
         self.num_item, self.num_feature = np.shape(x)
         self.X = np.ones((self.num_item, self.num_feature + 1))
         self.X[:, :-1] = x
@@ -14,7 +14,7 @@ class LR:
         self.gamma = gamma
         self.beta = beta
         self.batch = batch
-        self.optimization = optimization
+        self.optimizer = optimizer
 
     def shuffle(self):
         p = np.random.permutation(len(self.Y))
@@ -51,17 +51,17 @@ class LR:
                 m_bias = m / (1 - self.gamma ** (i + 1))
                 v_bias = v / (1 - self.beta ** (i + 1))
 
-                if self.optimization == "None":
+                if self.optimizer == "None":
                     self.theta = self.theta - self.lr * grad
-                elif self.optimization == "Momentum":
+                elif self.optimizer == "Momentum":
                     M = self.gamma * M + (1 - self.gamma) * grad * self.lr
                     self.theta = self.theta - M
-                elif self.optimization == "RMSprop":
+                elif self.optimizer == "RMSprop":
                     if self.judge(v_bias, 1e-5):
                         self.theta = self.theta - self.lr * grad / (np.sqrt(v_bias))
                     else:
                         self.theta = self.theta - self.lr * grad
-                elif self.optimization == "Adam":
+                elif self.optimizer == "Adam":
                     if self.judge(v_bias, 1e-5):
                         self.theta = self.theta - 1.0 / np.sqrt(v_bias) * m_bias
                     else:
@@ -80,3 +80,22 @@ class LR:
             x.append(1)
             ret.append(np.dot(x, self.theta))
         return ret
+
+    def mse(self, x, y):
+        y_pred = self.predict(x)
+        return np.mean((y - y_pred) ** 2)
+
+    def rmse(self, x, y):
+        y_pred = self.predict(x)
+        return np.sqrt(np.mean((y - y_pred) ** 2))
+
+    def mae(self, x, y):
+        y_pred = self.predict(x)
+        return np.mean(np.abs(y - y_pred))
+
+    def r_squared(self, x, y):
+        y_pred = self.predict(x)
+        mse = np.sum((y - y_pred) ** 2)
+        var = np.sum((y - np.mean(y)) ** 2)
+        return 1 - (mse / var)
+
