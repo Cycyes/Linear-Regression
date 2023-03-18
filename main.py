@@ -10,22 +10,19 @@ from regression_model import LR
 def main(args):
     x_train, y_train = train_data_1()
     x_test, y_test = test_data_1()
-    print(x_train)
-    print(y_train)
-    print(x_test)
-    print(y_test)
     x = [[1.0], [2.0], [3.0]]
     y = [1.0, 2.0, 3.0]
-    print(np.shape(x_test))
-    print(np.shape(y_test))
 
     reg = LR(x=x_train, y=y_train, epoch=args.epoch, lr=args.lr, alpha=args.alpha, gamma=args.gamma, beta=args.beta, batch=args.batch, optimizer=args.optimizer)
+    #reg = LR(x=x_test, y=y_test, epoch=args.epoch, lr=args.lr, alpha=args.alpha, gamma=args.gamma, beta=args.beta, batch=args.batch, optimizer=args.optimizer)
 
     reg.fit()
 
     # 19,female,27.9,0,yes,southwest,16884.924
     # print(reg.predict([[19, 27.9, 0, 100]]))
     # test_all(x_train, x_test, y_train, y_test)
+    # 77,79.77515201
+    print(reg.predict([[77.79]]))
 
     return 0
 

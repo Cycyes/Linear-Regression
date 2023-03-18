@@ -47,7 +47,6 @@ class LR:
                 pred = np.dot(batch_x, self.theta)
                 tmp = pred - batch_y
                 grad = np.dot(batch_x.transpose(), tmp) / len(batch_y) + self.alpha * self.theta
-
                 m_bias = m / (1 - self.gamma ** (i + 1))
                 v_bias = v / (1 - self.beta ** (i + 1))
 
@@ -69,7 +68,6 @@ class LR:
 
                 m = self.lr * (self.gamma * m + (1 - self.gamma) * grad)
                 v = self.beta * v + (1 - self.beta) * np.square(grad)
-
                 cost = 1.0 / (2.0 * len(batch_y)) * np.sum(np.square(np.dot(batch_x, self.theta) - batch_y))
                 print("the {}th cost is: {}".format(i, round(cost, 2)))
         return self
