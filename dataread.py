@@ -36,4 +36,4 @@ def train_data_1():
         x.append(t)
     return x, y
 
-print(train_data_1())
+# print(train_data_1())

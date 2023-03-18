@@ -3,20 +3,7 @@ import numpy as np
 # Linear Regression
 class LR:
     def __init__(self, x, y, epoch=10000, lr=1e-3, alpha=0, gamma=0.9, beta=0.9, batch=1, optimizer="None"):
-        '''
-        try:
-            self.num_item, self.num_feature = np.shape(x)
-        except:
-            self.num_item = np.shape(x)[0]
-            self.num_feature = 1
-        '''
-        try:
-            self.num_item, self.num_feature = np.shape(x)
-        except:
-            self.num_item = np.shape(x)[0]
-            self.num_feature = 1
-            x = np.array(x).reshape(self.num_item, 1)
-            print(x)
+        self.num_item, self.num_feature = np.shape(x)
         self.X = np.ones((self.num_item, self.num_feature + 1))
         self.X[:, :-1] = x
         self.Y = y
