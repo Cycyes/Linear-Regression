@@ -162,7 +162,7 @@ def test_all(x_train, x_test, x_train_scaled, x_test_scaled, x_train_pca2, x_tes
     #######################################################################################################
     ################################################ Batch ################################################
     #######################################################################################################
-    if True:
+    if False:
         print("test Batch begin")
 
         batch_list = ["batch=1 (BGD)", "batch=4 (mini-BGD)", "batch=12 (mini-BGD)", "batch=num_item (SGD)"]
@@ -190,11 +190,11 @@ def test_all(x_train, x_test, x_train_scaled, x_test_scaled, x_train_pca2, x_tes
         plt.legend()
 
         plt.subplot(2, 2, 3)
-        plt.plot(Batch_costs[2][::10], label="batch=12 (mini-BGD)")
+        plt.plot(Batch_costs[2], label="batch=12 (mini-BGD)")
         plt.legend()
 
         plt.subplot(2, 2, 4)
-        plt.plot(Batch_costs[3][::100], label="batch=num_item (SGD)")
+        plt.plot(Batch_costs[3], label="batch=num_item (SGD)")
         plt.legend()
 
         plt.show()
@@ -210,33 +210,6 @@ def test_all(x_train, x_test, x_train_scaled, x_test_scaled, x_train_pca2, x_tes
         batch_1_pred = batch_1.predict(x_test_scaled)
         batch_2_pred = batch_2.predict(x_test_scaled)
         batch_3_pred = batch_3.predict(x_test_scaled)
-        plt.figure(figsize=(10, 6))
-        plt.subplot(2, 2, 1)
-        plt.plot(fs_0_pred, label="Predicted")
-        plt.plot(y_test, label="True")
-        plt.title("None with lr=1e-5")
-        plt.legend()
-
-        plt.subplot(2, 2, 2)
-        plt.plot(fs_1_pred, label="Predicted")
-        plt.plot(y_test, label="True")
-        plt.title("Feature scaling with lr=1e-5")
-        plt.legend()
-
-        plt.subplot(2, 2, 3)
-        plt.plot(fs_2_pred, label="Predicted")
-        plt.plot(y_test, label="True")
-        plt.title("None with lr=1e-6")
-        plt.legend()
-
-        plt.subplot(2, 2, 4)
-        plt.plot(fs_3_pred, label="Predicted")
-        plt.plot(y_test, label="True")
-        plt.title("Feature scaling with lr=1e-6")
-        plt.legend()
-
-        plt.subplots_adjust(hspace=0.5, wspace=0.3)
-        plt.show()
 
         print("test Batch end")
 
@@ -522,7 +495,7 @@ def test_all(x_train, x_test, x_train_scaled, x_test_scaled, x_train_pca2, x_tes
     #######################################################################################################
     ############################### Principal Component Analysis Preprocess ###############################
     #######################################################################################################
-    if False:
+    if True:
         print("test Principal Component Analysis Preprocess begin")
 
         pca_list = ["k=2", "k=4", "k=6", "k=8", "k=10", "none"]
@@ -769,12 +742,24 @@ def test_all(x_train, x_test, x_train_scaled, x_test_scaled, x_train_pca2, x_tes
         
         print("test optimizer end")
 
+    #######################################################################################################
+    ############################################## SKlearn ################################################
+    #######################################################################################################
     if True:
         from sklearn import linear_model
-        demo = linear_model.LinearRegression()
-        demo.fit(x_train, y_train)
         from sklearn.metrics import mean_squared_error
-        print(mean_squared_error(y_test, demo.predict(x_test)))
+        
+        text_list_sk = ["Sk-learn", "LR"]
+
+        demo = linear_model.LinearRegression()
+        demo.fit(x_train_scaled, y_train)
+        myLR = LR(x=x_train_scaled, y=y_train, epoch=10000, lr=1e-2, batch=len(y_train), optimizer="Adam")
+        
+        MSE_scores = [mean_squared_error(y_test, demo.predict(x_test_scaled)), myLR.mse(x_test_scaled, y_test)]
+        preds = [demo.predict(x_test_scaled), myLR.predict(x_test_scaled)]
+        # y_test
+
+        print(mean_squared_error(y_test, demo.predict(x_test_scaled)))
 
 
     return "OK"
