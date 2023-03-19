@@ -37,3 +37,25 @@ def train_data_1():
     return x, y
 
 # print(train_data_1())
+
+# housing
+
+def housing_train_data():
+    df = pd.read_csv(os.path.join(os.path.dirname(__file__), 'datasets', 'housing', 'train_dataset.csv'))
+    y = []
+    x = []
+    for index, row in df.iterrows():
+        t = [i for i in row]
+        y.append(t.pop())
+        x.append(t)
+    return x, y
+
+def housing_test_data():
+    df = pd.read_csv(os.path.join(os.path.dirname(__file__), 'datasets', 'housing', 'test_dataset.csv'))
+    y = []
+    x = []
+    for index, row in df.iterrows():
+        t = [i for i in row]
+        y.append(t.pop())
+        x.append(t)
+    return x, y
