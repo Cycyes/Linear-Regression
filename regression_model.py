@@ -40,11 +40,9 @@ class LR:
         m = np.zeros(self.num_feature + 1)
         M = np.zeros(self.num_feature + 1)
         v = np.zeros(self.num_feature + 1)
-        cost = []
+        costs = []
         for i in range(self.epoch):
             x, y = self.shuffle()
-            sum_cost = 0
-            cnt = 0
             for batch in self.get_batch(x, y, batch_size):
                 batch_x, batch_y = batch[0], batch[1].tolist()
                 pred = np.dot(batch_x, self.theta)
@@ -78,12 +76,10 @@ class LR:
                 
                 if isOutput:
                     print("the {}th cost is: {}".format(i, round(cost, 2)))
-                
-                sum_cost += cost
-                cnt += 1
-            np.append(cost, sum_cost / cnt)
 
-        return cost
+                np.append(costs, cost)
+            
+        return costs
 
     def predict(self, x_list):
         ret = []
