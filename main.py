@@ -495,7 +495,7 @@ def test_all(x_train, x_test, x_train_scaled, x_test_scaled, x_train_pca2, x_tes
     #######################################################################################################
     ############################### Principal Component Analysis Preprocess ###############################
     #######################################################################################################
-    if True:
+    if False:
         print("test Principal Component Analysis Preprocess begin")
 
         pca_list = ["k=2", "k=4", "k=6", "k=8", "k=10", "none"]
@@ -754,9 +754,31 @@ def test_all(x_train, x_test, x_train_scaled, x_test_scaled, x_train_pca2, x_tes
         demo = linear_model.LinearRegression()
         demo.fit(x_train_scaled, y_train)
         myLR = LR(x=x_train_scaled, y=y_train, epoch=10000, lr=1e-2, batch=len(y_train), optimizer="Adam")
+        myLR.fit()
         
         MSE_scores = [mean_squared_error(y_test, demo.predict(x_test_scaled)), myLR.mse(x_test_scaled, y_test)]
+        plt.rcParams["font.sans-serif"] = ['SimHei']
+        plt.rcParams["axes.unicode_minus"] = False
+        mse_width = range(0, len(text_list_sk))
+        plt.bar(mse_width, MSE_scores, lw=0.1, fc=(31/255, 119/255, 180/255), width=0.3, label="MSE")
+        plt.title("Eval scores of Sk-learn and LR")
+        plt.xlabel("Method")
+        plt.ylabel("Scores")
+        plt.xticks([i for i in mse_width], text_list_sk)
+        plt.legend()
+        plt.show()
+
+
+
         preds = [demo.predict(x_test_scaled), myLR.predict(x_test_scaled)]
+        plt.plot(y_test, label="True")
+        plt.plot(preds[0], label="Sk-learn")
+        plt.plot(preds[1], label="LR")
+        plt.title("Comparison of Sk-learn and LR")
+        plt.xlabel("Index")
+        plt.ylabel("Value")
+        plt.legend()
+        plt.show()
         # y_test
 
         print(mean_squared_error(y_test, demo.predict(x_test_scaled)))
