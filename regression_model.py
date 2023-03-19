@@ -40,8 +40,11 @@ class LR:
         m = np.zeros(self.num_feature + 1)
         M = np.zeros(self.num_feature + 1)
         v = np.zeros(self.num_feature + 1)
+        cost = []
         for i in range(self.epoch):
             x, y = self.shuffle()
+            sum_cost = 0
+            cnt = 0
             for batch in self.get_batch(x, y, batch_size):
                 batch_x, batch_y = batch[0], batch[1].tolist()
                 pred = np.dot(batch_x, self.theta)
@@ -50,52 +53,56 @@ class LR:
 
                 m_bias = m / (1 - self.gamma ** (i + 1))
                 v_bias = v / (1 - self.beta ** (i + 1))
-
+                M = self.gamma * M + (1 - self.gamma) * grad * self.lr
+                
                 if self.optimizer == "None":
                     self.theta = self.theta - self.lr * grad
                 elif self.optimizer == "Momentum":
-                    M = self.gamma * M + (1 - self.gamma) * grad * self.lr
                     self.theta = self.theta - M
                 elif self.optimizer == "RMSprop":
                     if self.judge(v_bias, 1e-5):
                         self.theta = self.theta - self.lr * grad / (np.sqrt(v_bias))
                     else:
-                        self.theta = self.theta - self.lr * grad
+                        self.theta = self.theta - M
                 elif self.optimizer == "Adam":
                     if self.judge(v_bias, 1e-5):
                         self.theta = self.theta - 1.0 / np.sqrt(v_bias) * m_bias
                     else:
-                        self.theta = self.theta - self.lr * grad
+                        self.theta = self.theta - M
 
                 m = self.lr * (self.gamma * m + (1 - self.gamma) * grad)
                 v = self.beta * v + (1 - self.beta) * np.square(grad)
-
                 cost = 1.0 / (2.0 * len(batch_y)) * np.sum(np.square(np.dot(batch_x, self.theta) - batch_y))
                 print("the {}th cost is: {}".format(i, round(cost, 2)))
-        return self
+                sum_cost += cost
+                cnt += 1
+            np.append(cost, sum_cost / cnt)
+
+        return cost
 
     def predict(self, x_list):
         ret = []
         for x in x_list:
-            x.append(1)
-            ret.append(np.dot(x, self.theta))
+            x_tmp = [i for i in x]
+            x_tmp.append(1)
+            ret.append(np.dot(x_tmp, self.theta))
         return ret
 
     def mse(self, x, y):
         y_pred = self.predict(x)
-        return np.mean((y - y_pred) ** 2)
+        return np.mean((np.array(y) - np.array(y_pred)) ** 2)
 
     def rmse(self, x, y):
         y_pred = self.predict(x)
-        return np.sqrt(np.mean((y - y_pred) ** 2))
+        return np.sqrt(np.mean((np.array(y) - np.array(y_pred)) ** 2))
 
     def mae(self, x, y):
         y_pred = self.predict(x)
-        return np.mean(np.abs(y - y_pred))
+        return np.mean(np.abs(np.array(y) - np.array(y_pred)))
 
     def r_squared(self, x, y):
         y_pred = self.predict(x)
-        mse = np.sum((y - y_pred) ** 2)
-        var = np.sum((y - np.mean(y)) ** 2)
+        mse = np.sum((np.array(y) - np.array(y_pred)) ** 2)
+        var = np.sum((np.array(y) - np.mean(y)) ** 2)
         return 1 - (mse / var)
 

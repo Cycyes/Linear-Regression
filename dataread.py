@@ -62,3 +62,26 @@ def get_data_2():
     x = [list(i) for i in zip(*tmp)]
     i = int(len(x) * 0.8)
     return [x[:i], y[:i]], [x[i:], y[i:]]
+# print(train_data_1())
+
+# housing
+
+def housing_train_data():
+    df = pd.read_csv(os.path.join(os.path.dirname(__file__), 'datasets', 'housing', 'train_dataset.csv'))
+    y = []
+    x = []
+    for index, row in df.iterrows():
+        t = [i for i in row]
+        y.append(t.pop())
+        x.append(t)
+    return x, y
+
+def housing_test_data():
+    df = pd.read_csv(os.path.join(os.path.dirname(__file__), 'datasets', 'housing', 'test_dataset.csv'))
+    y = []
+    x = []
+    for index, row in df.iterrows():
+        t = [i for i in row]
+        y.append(t.pop())
+        x.append(t)
+    return x, y
