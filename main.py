@@ -236,6 +236,29 @@ def test_all(x_train, x_test, x_train_scaled, x_test_scaled, x_train_pca2, x_tes
         lr_3_none_costs = lr_3_none.fit()
         lr_4_none_costs = lr_4_none.fit()
 
+        plt.figure(figsize=(10, 6))
+        plt.subplot(2, 3, 1)
+        plt.plot(lr_0_none_costs, label="lr=1e-1")
+        plt.legend()
+
+        plt.subplot(2, 3, 2)
+        plt.plot(lr_1_none_costs, label="lr=1e-2")
+        plt.legend()
+
+        plt.subplot(2, 3, 3)
+        plt.plot(lr_2_none_costs, label="lr=1e-3")
+        plt.legend()
+
+        plt.subplot(2, 3, 4)
+        plt.plot(lr_3_none_costs, label="lr=1e-4")
+        plt.legend()
+
+        plt.subplot(2, 3, 5)
+        plt.plot(lr_4_none_costs, label="lr=1e-5")
+        plt.legend()
+
+        plt.show()
+
         print("MSE")
         Lr_None_MSE_scores = [lr_0_none.mse(x_test_scaled, y_test), lr_1_none.mse(x_test_scaled, y_test), lr_2_none.mse(x_test_scaled, y_test), lr_3_none.mse(x_test_scaled, y_test), lr_4_none.mse(x_test_scaled, y_test)]
         for i in range(len(lr_list)):
@@ -327,6 +350,35 @@ def test_all(x_train, x_test, x_train_scaled, x_test_scaled, x_train_pca2, x_tes
                     norm_none_2.mae(x_test_scaled, y_test), norm_none_3.mae(x_test_scaled, y_test)]
         norm_none_R_Squared_scores = [norm_none_0.r_squared(x_test_scaled, y_test), norm_none_1.r_squared(x_test_scaled, y_test),
                     norm_none_2.r_squared(x_test_scaled, y_test), norm_none_3.r_squared(x_test_scaled, y_test)]
+        # Plotting bar chart for norm_none_scores
+        plt.figure(figsize=(10, 8))
+        plt.subplots_adjust(hspace=0.4, wspace=0.4)
+
+        plt.subplot(2, 2, 1)
+        plt.bar(norm_none_list, norm_none_MSE_scores)
+        plt.title("MSE Scores")
+        plt.xlabel("Alpha")
+        plt.ylabel("Score")
+
+        plt.subplot(2, 2, 2)
+        plt.bar(norm_none_list, norm_none_RMSE_scores)
+        plt.title("RMSE Scores")
+        plt.xlabel("Alpha")
+        plt.ylabel("Score")
+
+        plt.subplot(2, 2, 3)
+        plt.bar(norm_none_list, norm_none_MAE_scores)
+        plt.title("MAE Scores")
+        plt.xlabel("Alpha")
+        plt.ylabel("Score")
+
+        plt.subplot(2, 2, 4)
+        plt.bar(norm_none_list, norm_none_R_Squared_scores)
+        plt.title("R Squared Scores")
+        plt.xlabel("Alpha")
+        plt.ylabel("Score")
+
+        plt.show()
 
         display_results(norm_none_list, norm_none_MSE_scores, norm_none_RMSE_scores, norm_none_MAE_scores, norm_none_R_Squared_scores)
 
@@ -343,6 +395,34 @@ def test_all(x_train, x_test, x_train_scaled, x_test_scaled, x_train_pca2, x_tes
         norm_pca_1_costs = norm_pca_1.fit()
         norm_pca_2_costs = norm_pca_2.fit()
         norm_pca_3_costs = norm_pca_3.fit()
+        plt.figure(figsize=(10, 8))
+        plt.subplots_adjust(hspace=0.4, wspace=0.4)
+        
+        plt.subplot(2, 2, 1)
+        plt.plot(norm_pca_0_costs)
+        plt.title("Alpha=0")
+        plt.xlabel("Epoch")
+        plt.ylabel("Cost")
+        
+        plt.subplot(2, 2, 2)
+        plt.plot(norm_pca_1_costs)
+        plt.title("Alpha=0.001")
+        plt.xlabel("Epoch")
+        plt.ylabel("Cost")
+        
+        plt.subplot(2, 2, 3)
+        plt.plot(norm_pca_2_costs)
+        plt.title("Alpha=0.01")
+        plt.xlabel("Epoch")
+        plt.ylabel("Cost")
+        
+        plt.subplot(2, 2, 4)
+        plt.plot(norm_pca_3_costs)
+        plt.title("Alpha=0.1")
+        plt.xlabel("Epoch")
+        plt.ylabel("Cost")
+        
+        plt.show()
 
         norm_pca_MSE_scores = [norm_pca_0.mse(x_test_pca8, y_test), norm_pca_1.mse(x_test_pca8, y_test),
                     norm_pca_2.mse(x_test_pca8, y_test), norm_pca_3.mse(x_test_pca8, y_test)]
@@ -378,6 +458,34 @@ def test_all(x_train, x_test, x_train_scaled, x_test_scaled, x_train_pca2, x_tes
                     norm_pr_2.mae(x_test_pr, y_test), norm_pr_3.mae(x_test_pr, y_test)]
         norm_pr_R_Squared_scores = [norm_pr_0.r_squared(x_test_pr, y_test), norm_pr_1.r_squared(x_test_pr, y_test),
                     norm_pr_2.r_squared(x_test_pr, y_test), norm_pr_3.r_squared(x_test_pr, y_test)]
+        plt.figure(figsize=(10, 8))
+        plt.subplots_adjust(hspace=0.4, wspace=0.4)
+
+        plt.subplot(2, 2, 1)
+        plt.bar(norm_pr_list, norm_pr_MSE_scores)
+        plt.title("MSE Scores")
+        plt.xlabel("Alpha")
+        plt.ylabel("Score")
+
+        plt.subplot(2, 2, 2)
+        plt.bar(norm_pr_list, norm_pr_RMSE_scores)
+        plt.title("RMSE Scores")
+        plt.xlabel("Alpha")
+        plt.ylabel("Score")
+
+        plt.subplot(2, 2, 3)
+        plt.bar(norm_pr_list, norm_pr_MAE_scores)
+        plt.title("MAE Scores")
+        plt.xlabel("Alpha")
+        plt.ylabel("Score")
+
+        plt.subplot(2, 2, 4)
+        plt.bar(norm_pr_list, norm_pr_R_Squared_scores)
+        plt.title("R Squared Scores")
+        plt.xlabel("Alpha")
+        plt.ylabel("Score")
+
+        plt.show()
 
         display_results(norm_pr_list, norm_pr_MSE_scores, norm_pr_RMSE_scores, norm_pr_MAE_scores, norm_pr_R_Squared_scores)
 
@@ -387,17 +495,17 @@ def test_all(x_train, x_test, x_train_scaled, x_test_scaled, x_train_pca2, x_tes
     #######################################################################################################
     ############################### Principal Component Analysis Preprocess ###############################
     #######################################################################################################
-    if False:
+    if True:
         print("test Principal Component Analysis Preprocess begin")
 
         pca_list = ["k=2", "k=4", "k=6", "k=8", "k=10", "none"]
 
-        pca_k2 = LR(x=x_train_pca2, y=y_train, epoch=100, lr=1e-5, optimizer="None")
-        pca_k4 = LR(x=x_train_pca4, y=y_train, epoch=100, lr=1e-5, optimizer="None")
-        pca_k6 = LR(x=x_train_pca6, y=y_train, epoch=100, lr=1e-5, optimizer="None")
-        pca_k8 = LR(x=x_train_pca8, y=y_train, epoch=100, lr=1e-5, optimizer="None")
-        pca_k10 = LR(x=x_train_pca10, y=y_train, epoch=100, lr=1e-5, optimizer="None")
-        pca_none = LR(x=x_train_scaled, y=y_train, epoch=100, lr=1e-5, optimizer="None")
+        pca_k2 = LR(x=x_train_pca2, y=y_train, epoch=1000, lr=1e-5, optimizer="None")
+        pca_k4 = LR(x=x_train_pca4, y=y_train, epoch=1000, lr=1e-5, optimizer="None")
+        pca_k6 = LR(x=x_train_pca6, y=y_train, epoch=1000, lr=1e-5, optimizer="None")
+        pca_k8 = LR(x=x_train_pca8, y=y_train, epoch=1000, lr=1e-5, optimizer="None")
+        pca_k10 = LR(x=x_train_pca10, y=y_train, epoch=1000, lr=1e-5, optimizer="None")
+        pca_none = LR(x=x_train_scaled, y=y_train, epoch=1000, lr=1e-5, optimizer="None")
         
         pca_k2_costs = pca_k2.fit()
         pca_k4_costs = pca_k4.fit()
@@ -405,6 +513,20 @@ def test_all(x_train, x_test, x_train_scaled, x_test_scaled, x_train_pca2, x_tes
         pca_k8_costs = pca_k8.fit()
         pca_k10_costs = pca_k10.fit()
         pca_none_costs = pca_none.fit()
+
+        plt.figure(figsize=(10, 8))
+        plt.plot(pca_k2_costs, label="k=2")
+        plt.plot(pca_k4_costs, label="k=4")
+        plt.plot(pca_k6_costs, label="k=6")
+        plt.plot(pca_k8_costs, label="k=8")
+        plt.plot(pca_k10_costs, label="k=10")
+        plt.plot(pca_none_costs, label="None")
+        plt.title("PCA Costs")
+        plt.xlabel("Epoch")
+        plt.ylabel("Cost")
+        plt.legend()
+        plt.show()
+
 
         pca_MSE_scores = [pca_k2.mse(x_test_pca2, y_test), pca_k4.mse(x_test_pca4, y_test),
                     pca_k6.mse(x_test_pca6, y_test), pca_k8.mse(x_test_pca8, y_test), pca_k10.mse(x_test_pca10, y_test), pca_none.mse(x_test_scaled, y_test)]
@@ -414,6 +536,34 @@ def test_all(x_train, x_test, x_train_scaled, x_test_scaled, x_train_pca2, x_tes
                     pca_k6.mae(x_test_pca6, y_test), pca_k8.mae(x_test_pca8, y_test), pca_k10.mae(x_test_pca10, y_test), pca_none.mae(x_test_scaled, y_test)]
         pca_R_Squared_scores = [pca_k2.r_squared(x_test_pca2, y_test), pca_k4.r_squared(x_test_pca4, y_test),
                     pca_k6.r_squared(x_test_pca6, y_test), pca_k8.r_squared(x_test_pca8, y_test), pca_k10.r_squared(x_test_pca10, y_test), pca_none.r_squared(x_test_scaled, y_test)]
+        plt.figure(figsize=(10, 10))
+        plt.subplots_adjust(hspace=0.4, wspace=0.4)
+
+        plt.subplot(2, 2, 1)
+        plt.bar(pca_list, pca_MSE_scores)
+        plt.title("MSE Scores")
+        plt.xlabel("PCA")
+        plt.ylabel("Score")
+
+        plt.subplot(2, 2, 2)
+        plt.bar(pca_list, pca_RMSE_scores)
+        plt.title("RMSE Scores")
+        plt.xlabel("PCA")
+        plt.ylabel("Score")
+
+        plt.subplot(2, 2, 3)
+        plt.bar(pca_list, pca_MAE_scores)
+        plt.title("MAE Scores")
+        plt.xlabel("PCA")
+        plt.ylabel("Score")
+
+        plt.subplot(2, 2, 4)
+        plt.bar(pca_list, pca_R_Squared_scores)
+        plt.title("R Squared Scores")
+        plt.xlabel("PCA")
+        plt.ylabel("Score")
+
+        plt.show()
 
         display_results(pca_list, pca_MSE_scores, pca_RMSE_scores, pca_MAE_scores, pca_R_Squared_scores)
 
@@ -424,13 +574,66 @@ def test_all(x_train, x_test, x_train_scaled, x_test_scaled, x_train_pca2, x_tes
         pca_k10_pred = pca_k10.predict(x_test_pca10)
         pca_none_pred = pca_none.predict(x_test_scaled)
 
+        plt.figure(figsize=(10, 8))
+        plt.subplots_adjust(hspace=0.4, wspace=0.4)
+
+        plt.subplot(2, 3, 1)
+        plt.plot(y_test, label="True")
+        plt.plot(pca_k2_pred, label="Pred")
+        plt.title("PCA k=2")
+        plt.xlabel("Index")
+        plt.ylabel("Value")
+        plt.legend()
+
+        plt.subplot(2, 3, 2)
+        plt.plot(y_test, label="True")
+        plt.plot(pca_k4_pred, label="Pred")
+        plt.title("PCA k=4")
+        plt.xlabel("Index")
+        plt.ylabel("Value")
+        plt.legend()
+
+        plt.subplot(2, 3, 3)
+        plt.plot(y_test, label="True")
+        plt.plot(pca_k6_pred, label="Pred")
+        plt.title("PCA k=6")
+        plt.xlabel("Index")
+        plt.ylabel("Value")
+        plt.legend()
+
+        plt.subplot(2, 3, 4)
+        plt.plot(y_test, label="True")
+        plt.plot(pca_k8_pred, label="Pred")
+        plt.title("PCA k=8")
+        plt.xlabel("Index")
+        plt.ylabel("Value")
+        plt.legend()
+
+        plt.subplot(2, 3, 5)
+        plt.plot(y_test, label="True")
+        plt.plot(pca_k10_pred, label="Pred")
+        plt.title("PCA k=10")
+        plt.xlabel("Index")
+        plt.ylabel("Value")
+        plt.legend()
+
+        plt.subplot(2, 3, 6)
+        plt.plot(y_test, label="True")
+        plt.plot(pca_none_pred, label="Pred")
+        plt.title("PCA None")
+        plt.xlabel("Index")
+        plt.ylabel("Value")
+        plt.legend()
+
+        plt.show()
+
         print("test Principal Component Analysis Preprocess end")
 
 
     #######################################################################################################
-    ############################################## Oprimizer ##############################################
+    ############################################## Optimizer ##############################################
     #######################################################################################################
-    if True:
+    if False:
         print("test optimizer begin")
 
         optimizer_list = ["Adam", "RMSprop", "Momentum", "None"]
