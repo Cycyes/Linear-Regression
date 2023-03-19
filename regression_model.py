@@ -35,7 +35,7 @@ class LR:
                 return False
         return True
 
-    def fit(self):
+    def fit(self, isOutput=False):
         batch_size = self.num_item // self.batch if self.num_item % self.batch == 0 else self.num_item // self.batch + 1
         m = np.zeros(self.num_feature + 1)
         M = np.zeros(self.num_feature + 1)
@@ -53,6 +53,7 @@ class LR:
 
                 m_bias = m / (1 - self.gamma ** (i + 1))
                 v_bias = v / (1 - self.beta ** (i + 1))
+                
                 M = self.gamma * M + (1 - self.gamma) * grad * self.lr
                 
                 if self.optimizer == "None":
@@ -60,20 +61,24 @@ class LR:
                 elif self.optimizer == "Momentum":
                     self.theta = self.theta - M
                 elif self.optimizer == "RMSprop":
-                    if self.judge(v_bias, 1e-5):
+                    if self.judge(v_bias, 1):
                         self.theta = self.theta - self.lr * grad / (np.sqrt(v_bias))
                     else:
                         self.theta = self.theta - M
                 elif self.optimizer == "Adam":
-                    if self.judge(v_bias, 1e-5):
+                    if self.judge(v_bias, 1):
                         self.theta = self.theta - 1.0 / np.sqrt(v_bias) * m_bias
                     else:
                         self.theta = self.theta - M
 
                 m = self.lr * (self.gamma * m + (1 - self.gamma) * grad)
                 v = self.beta * v + (1 - self.beta) * np.square(grad)
+                
                 cost = 1.0 / (2.0 * len(batch_y)) * np.sum(np.square(np.dot(batch_x, self.theta) - batch_y))
-                print("the {}th cost is: {}".format(i, round(cost, 2)))
+                
+                if isOutput:
+                    print("the {}th cost is: {}".format(i, round(cost, 2)))
+                
                 sum_cost += cost
                 cnt += 1
             np.append(cost, sum_cost / cnt)
