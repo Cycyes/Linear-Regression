@@ -54,7 +54,7 @@ def test_all(x_train, x_test, x_train_scaled, x_test_scaled, x_train_pca2, x_tes
     #######################################################################################################
     ########################################### Feature Scaling ###########################################
     #######################################################################################################
-    if True:
+    if False:
         print("test Feature Scaling begin")
 
         fs_list = ["none with lr=1e-5", "feature scaling with lr=1e-5", "none with lr=1e-6", "feature scaling with lr=1e-6"]
@@ -73,6 +73,32 @@ def test_all(x_train, x_test, x_train_scaled, x_test_scaled, x_train_pca2, x_tes
         Fs_RMSE_scores = [fs_0.rmse(x_test, y_test), fs_1.rmse(x_test_scaled, y_test), fs_2.rmse(x_test, y_test), fs_3.rmse(x_test_scaled, y_test)]
         Fs_MAE_scores = [fs_0.mae(x_test, y_test), fs_1.mae(x_test_scaled, y_test), fs_2.mae(x_test, y_test), fs_3.mae(x_test_scaled, y_test)]
         Fs_R_Squared_scores = [fs_0.r_squared(x_test, y_test), fs_1.r_squared(x_test_scaled, y_test), fs_2.r_squared(x_test, y_test), fs_3.r_squared(x_test_scaled, y_test)]
+        
+        Fs_MSE_scores = np.log(Fs_MSE_scores)
+        Fs_RMSE_scores = np.log(Fs_RMSE_scores)
+        Fs_MAE_scores = np.log(Fs_MAE_scores)
+        Fs_R_Squared_scores = np.log(Fs_R_Squared_scores)
+
+        plt.figure(figsize=(10, 6))
+        plt.subplot(2, 2, 1)
+        plt.bar(fs_list, Fs_MSE_scores)
+        plt.title("MSE")
+
+        plt.subplot(2, 2, 2)
+        plt.bar(fs_list, Fs_RMSE_scores)
+        plt.title("RMSE")
+
+        plt.subplot(2, 2, 3)
+        plt.bar(fs_list, Fs_MAE_scores)
+        plt.title("MAE")
+
+        plt.subplot(2, 2, 4)
+        plt.bar(fs_list, Fs_R_Squared_scores)
+        plt.title("R_Squared")
+
+        plt.show()
+
+        
 
         display_results(fs_list, Fs_MSE_scores, Fs_RMSE_scores, Fs_MAE_scores, Fs_R_Squared_scores)
 
@@ -81,9 +107,56 @@ def test_all(x_train, x_test, x_train_scaled, x_test_scaled, x_train_pca2, x_tes
         fs_2_pred = fs_2.predict(x_test)
         fs_3_pred = fs_3.predict(x_test_scaled)
 
+        plt.figure(figsize=(10, 6))
+        plt.subplot(2, 2, 1)
+        plt.plot(fs_0_pred, label="Predicted")
+        plt.plot(y_test, label="True")
+        plt.title("None with lr=1e-5")
+        plt.legend()
+
+        plt.subplot(2, 2, 2)
+        plt.plot(fs_1_pred, label="Predicted")
+        plt.plot(y_test, label="True")
+        plt.title("Feature scaling with lr=1e-5")
+        plt.legend()
+
+        plt.subplot(2, 2, 3)
+        plt.plot(fs_2_pred, label="Predicted")
+        plt.plot(y_test, label="True")
+        plt.title("None with lr=1e-6")
+        plt.legend()
+
+        plt.subplot(2, 2, 4)
+        plt.plot(fs_3_pred, label="Predicted")
+        plt.plot(y_test, label="True")
+        plt.title("Feature scaling with lr=1e-6")
+        plt.legend()
+
+        plt.show()
+
+        
         print(fs_0_costs)
 
         print("test Feature Scaling end")
+
+        plt.figure(figsize=(10, 6))
+        plt.subplot(2, 2, 1)
+        plt.plot(fs_0_costs, label="None with lr=1e-5")
+        plt.legend()
+
+        plt.subplot(2, 2, 2)
+        plt.plot(fs_1_costs, label="Feature scaling with lr=1e-5")
+        plt.legend()
+
+        plt.subplot(2, 2, 3)
+        plt.plot(fs_2_costs, label="None with lr=1e-6")
+        plt.legend()
+
+        plt.subplot(2, 2, 4)
+        plt.plot(fs_3_costs, label="Feature scaling with lr=1e-6")
+        plt.legend()
+
+        plt.show()
 
 
     #######################################################################################################
@@ -103,6 +176,28 @@ def test_all(x_train, x_test, x_train_scaled, x_test_scaled, x_train_pca2, x_tes
         batch_1_costs = batch_1.fit()
         batch_2_costs = batch_2.fit()
         batch_3_costs = batch_3.fit()
+
+        Batch_costs = [batch_0_costs, batch_1_costs, batch_2_costs, batch_3_costs]
+        Batch_list = ["batch=1 (BGD)", "batch=4 (mini-BGD)", "batch=12 (mini-BGD)", "batch=num_item (SGD)"]
+
+        plt.figure(figsize=(10, 6))
+        plt.subplot(2, 2, 1)
+        plt.plot(Batch_costs[0], label="batch=1 (BGD)")
+        plt.legend()
+
+        plt.subplot(2, 2, 2)
+        plt.plot(Batch_costs[1], label="batch=4 (mini-BGD)")
+        plt.legend()
+
+        plt.subplot(2, 2, 3)
+        plt.plot(Batch_costs[2], label="batch=12 (mini-BGD)")
+        plt.legend()
+
+        plt.subplot(2, 2, 4)
+        plt.plot(Batch_costs[3], label="batch=num_item (SGD)")
+        plt.legend()
+
+        plt.show()
 
         Batch_MSE_scores = [batch_0.mse(x_test_scaled, y_test), batch_1.mse(x_test_scaled, y_test), batch_2.mse(x_test_scaled, y_test), batch_3.mse(x_test_scaled, y_test)]
         Batch_RMSE_scores = [batch_0.rmse(x_test_scaled, y_test), batch_1.rmse(x_test_scaled, y_test), batch_2.rmse(x_test_scaled, y_test), batch_3.rmse(x_test_scaled, y_test)]
@@ -335,20 +430,45 @@ def test_all(x_train, x_test, x_train_scaled, x_test_scaled, x_train_pca2, x_tes
     #######################################################################################################
     ############################################## Oprimizer ##############################################
     #######################################################################################################
-    if False:
+    if True:
         print("test optimizer begin")
 
         optimizer_list = ["Adam", "RMSprop", "Momentum", "None"]
-
-        optimizer_adam = LR(x=x_train_scaled, y=y_train, epoch=10000, lr=1e-3, batch=len(y_train), optimizer="Adam")
-        optimizer_rmsprop = LR(x=x_train_scaled, y=y_train, epoch=10, lr=1e-3, batch=len(y_train), optimizer="RMSprop")
-        optimizer_momentum = LR(x=x_train_scaled, y=y_train, epoch=10, lr=1e-3, batch=len(y_train), optimizer="Momentum")
-        optimizer_none = LR(x=x_train_scaled, y=y_train, epoch=10, lr=1e-3, batch=len(y_train), optimizer="None")
+        epos = 100
+        optimizer_adam = LR(x=x_train_scaled, y=y_train, epoch=10000, lr=1e-5, batch=len(y_train), optimizer="Adam")
+        optimizer_rmsprop = LR(x=x_train_scaled, y=y_train, epoch=10000, lr=1e-5, batch=len(y_train), optimizer="RMSprop")
+        optimizer_momentum = LR(x=x_train_scaled, y=y_train, epoch=1000, lr=1e-5, batch=len(y_train), optimizer="Momentum")
+        optimizer_none = LR(x=x_train_scaled, y=y_train, epoch=1000, lr=1e-5, batch=len(y_train), optimizer="None")
 
         optimizer_adam_costs = optimizer_adam.fit(True)
         optimizer_rmsprop_costs = optimizer_rmsprop.fit()
         optimizer_momentum_costs = optimizer_momentum.fit()
         optimizer_none_costs = optimizer_none.fit()
+
+        plt.rcParams["font.sans-serif"] = ['SimHei']
+        plt.rcParams["axes.unicode_minus"] = False
+        plt.figure(figsize=(10, 10))
+        plt.subplot(2, 2, 1)
+        plt.plot([optimizer_adam_costs[i] for i in range(len(optimizer_adam_costs)) if i % 1000 == 0])
+        plt.title("Adam")
+        plt.xlabel("Epoch")
+        plt.ylabel("Cost")
+        plt.subplot(2, 2, 2)
+        plt.plot([optimizer_rmsprop_costs[i] for i in range(len(optimizer_rmsprop_costs)) if i % 1000 == 0])
+        plt.title("RMSprop")
+        plt.xlabel("Epoch")
+        plt.ylabel("Cost")
+        plt.subplot(2, 2, 3)
+        plt.plot([optimizer_momentum_costs[i] for i in range(len(optimizer_momentum_costs)) if i % 100 == 0])
+        plt.title("Momentum")
+        plt.xlabel("Epoch")
+        plt.ylabel("Cost")
+        plt.subplot(2, 2, 4)
+        plt.plot([optimizer_none_costs[i] for i in range(len(optimizer_none_costs)) if i % 100 == 0])
+        plt.title("None")
+        plt.xlabel("Epoch")
+        plt.ylabel("Cost")
+        plt.show()
 
         Optimizer_MSE_scores = [optimizer_adam.mse(x_test_scaled, y_test), optimizer_rmsprop.mse(x_test_scaled, y_test),
                     optimizer_momentum.mse(x_test_scaled, y_test), optimizer_none.mse(x_test_scaled, y_test)]
@@ -358,13 +478,64 @@ def test_all(x_train, x_test, x_train_scaled, x_test_scaled, x_train_pca2, x_tes
                     optimizer_momentum.mae(x_test_scaled, y_test), optimizer_none.mae(x_test_scaled, y_test)]
         Optimizer_R_Squared_scores = [optimizer_adam.r_squared(x_test_scaled, y_test), optimizer_rmsprop.r_squared(x_test_scaled, y_test),
                     optimizer_momentum.r_squared(x_test_scaled, y_test), optimizer_none.r_squared(x_test_scaled, y_test)]
- 
-        display_results(optimizer_list, Optimizer_MSE_scores, Optimizer_RMSE_scores, Optimizer_MAE_scores, Optimizer_R_Squared_scores)
 
+        plt.rcParams["font.sans-serif"] = ['SimHei']
+        plt.rcParams["axes.unicode_minus"] = False
+        mse_width = range(0, len(optimizer_list))
+        rmse_width = [i + 0.3 for i in mse_width]
+        mae_width = [i + 0.6 for i in mse_width]
+        plt.figure(figsize=(10, 10))
+        plt.bar(mse_width, Optimizer_MSE_scores, lw=0.5, fc="r", width=0.3, label="MSE")
+        plt.bar(rmse_width, Optimizer_RMSE_scores, lw=0.5, fc="b", width=0.3, label="RMSE")
+        plt.bar(mae_width, Optimizer_MAE_scores, lw=0.5, fc="g", width=0.3, label="MAE")
+        plt.title("Eval scores of Optimizer")
+        plt.xlabel("Optimizer")
+        plt.ylabel("Scores")
+        plt.xticks([i + 0.45 for i in mse_width], optimizer_list)
+        plt.legend()
+        plt.show()
+        
+
+        display_results(optimizer_list, Optimizer_MSE_scores, Optimizer_RMSE_scores, Optimizer_MAE_scores, Optimizer_R_Squared_scores)
         optimizer_adam_pred = optimizer_adam.predict(x_test_scaled)
         optimizer_rmsprop_pred = optimizer_rmsprop.predict(x_test_scaled)
         optimizer_momentum_pred = optimizer_momentum.predict(x_test_scaled)
         optimizer_none_pred = optimizer_none.predict(x_test_scaled)
+
+        plt.rcParams["font.sans-serif"] = ['SimHei']
+        plt.rcParams["axes.unicode_minus"] = False
+        plt.figure(figsize=(10, 10))
+        plt.subplot(2, 2, 1)
+        plt.plot(y_test, label="True")
+        plt.plot(optimizer_adam_pred, label="Pred")
+        plt.title("Adam")
+        plt.xlabel("Index")
+        plt.ylabel("Value")
+        plt.legend()
+        plt.subplot(2, 2, 2)
+        plt.plot(y_test, label="True")
+        plt.plot(optimizer_rmsprop_pred, label="Pred")
+        plt.title("RMSprop")
+        plt.xlabel("Index")
+        plt.ylabel("Value")
+        plt.legend()
+        plt.subplot(2, 2, 3)
+        plt.plot(y_test, label="True")
+        plt.plot(optimizer_momentum_pred, label="Pred")
+        plt.title("Momentum")
+        plt.xlabel("Index")
+        plt.ylabel("Value")
+        plt.legend()
+        plt.subplot(2, 2, 4)
+        plt.plot(y_test, label="True")
+        plt.plot(optimizer_none_pred, label="Pred")
+        plt.title("None")
+        plt.xlabel("Index")
+        plt.ylabel("Value")
+        plt.legend()
+        plt.show()
+
+        print("test optimizer end")
         
         print("test optimizer end")
 
