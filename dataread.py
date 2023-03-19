@@ -60,8 +60,6 @@ def get_data_2():
     x = []
     y = tmp.pop()
     x = [list(i) for i in zip(*tmp)]
-    i = int(len(x) * 0.8)
-    return [x[:i], y[:i]], [x[i:], y[i:]]
 # print(train_data_1())
 
 # housing
