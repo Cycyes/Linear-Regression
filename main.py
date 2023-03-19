@@ -81,6 +81,8 @@ def test_all(x_train, x_test, x_train_scaled, x_test_scaled, x_train_pca2, x_tes
         fs_2_pred = fs_2.predict(x_test)
         fs_3_pred = fs_3.predict(x_test_scaled)
 
+        print(fs_0_costs)
+
         print("test Feature Scaling end")
 
 

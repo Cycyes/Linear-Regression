@@ -77,7 +77,7 @@ class LR:
                 if isOutput:
                     print("the {}th cost is: {}".format(i, round(cost, 2)))
 
-                np.append(costs, cost)
+                costs.append(cost)
             
         return costs
 
